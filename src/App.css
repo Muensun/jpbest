@@ -572,6 +572,33 @@
   align-items: center;
 }
 
+.write-mode-toggle {
+  display: flex;
+  gap: 6px;
+  background: var(--border);
+  padding: 4px;
+  border-radius: 999px;
+  margin-top: 4px;
+}
+
+.write-mode-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.write-mode-btn.is-active {
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: var(--shadow);
+}
+
 .write-canvas-wrap {
   position: relative;
   width: 300px;
@@ -593,6 +620,10 @@
 
 .write-canvas-guide {
   pointer-events: none;
+}
+
+.write-canvas-guide.is-hidden {
+  opacity: 0;
 }
 
 .write-canvas-ink {

@@ -19,6 +19,8 @@ function drawGlyph(canvas, dpr, char, color) {
 export default function WriteDeck({ cards, onBack }) {
   const [pos, setPos] = useState(0);
   const [score, setScore] = useState(null);
+  const [mode, setMode] = useState("guide"); // "guide" | "blind"
+  const [showAnswer, setShowAnswer] = useState(false);
   const guideCanvasRef = useRef(null);
   const inkCanvasRef = useRef(null);
   const maskCanvasRef = useRef(null);
@@ -36,6 +38,7 @@ export default function WriteDeck({ cards, onBack }) {
     }
     drawGlyph(maskCanvasRef.current, dpr, card.kana, "#000000");
 
+    setShowAnswer(false);
     clearInk();
   }, [pos]);
 
@@ -47,6 +50,11 @@ export default function WriteDeck({ cards, onBack }) {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, SIZE, SIZE);
     setScore(null);
+  };
+
+  const changeMode = (nextMode) => {
+    setMode(nextMode);
+    setShowAnswer(false);
   };
 
   const getPoint = (e) => {
@@ -118,6 +126,7 @@ export default function WriteDeck({ cards, onBack }) {
   const goNext = () => setPos((p) => (p + 1) % cards.length);
 
   const scoreClass = score === null ? "" : score >= 70 ? "is-good" : score >= 40 ? "is-ok" : "is-low";
+  const guideVisible = mode === "guide" || showAnswer;
 
   return (
     <div className="write-view">
@@ -127,8 +136,26 @@ export default function WriteDeck({ cards, onBack }) {
         <span className="menu-header-spacer" />
       </div>
 
+      <div className="write-mode-toggle">
+        <button
+          className={`write-mode-btn ${mode === "guide" ? "is-active" : ""}`}
+          onClick={() => changeMode("guide")}
+        >
+          มีเส้นให้ลอก
+        </button>
+        <button
+          className={`write-mode-btn ${mode === "blind" ? "is-active" : ""}`}
+          onClick={() => changeMode("blind")}
+        >
+          ไม่มีเส้น (ท่องจำ)
+        </button>
+      </div>
+
       <div className="write-canvas-wrap">
-        <canvas ref={guideCanvasRef} className="write-canvas write-canvas-guide" />
+        <canvas
+          ref={guideCanvasRef}
+          className={`write-canvas write-canvas-guide ${guideVisible ? "" : "is-hidden"}`}
+        />
         <canvas
           ref={inkCanvasRef}
           className="write-canvas write-canvas-ink"
@@ -139,14 +166,23 @@ export default function WriteDeck({ cards, onBack }) {
         />
       </div>
 
-      <p className="hint-text">ลากนิ้วหรือเมาส์ทับตัวจาง ๆ ให้ใกล้เคียงที่สุด</p>
+      <p className="hint-text">
+        {mode === "guide"
+          ? "ลากนิ้วหรือเมาส์ทับตัวจาง ๆ ให้ใกล้เคียงที่สุด"
+          : "เขียนจากความจำ แล้วกด \"ดูเฉลย\" เพื่อเทียบ"}
+      </p>
 
       <p className={`write-score ${scoreClass}`}>
-        {score === null ? " " : `ใกล้เคียง ${score}%`}
+        {score === null ? " " : `ใกล้เคียง ${score}%`}
       </p>
 
       <div className="study-actions">
         <button className="btn btn-skip" onClick={clearInk}>ล้าง</button>
+        {mode === "blind" && (
+          <button className="btn btn-skip" onClick={() => setShowAnswer((s) => !s)}>
+            {showAnswer ? "ซ่อนเฉลย" : "ดูเฉลย"}
+          </button>
+        )}
         <button className="btn btn-yes" onClick={checkScore}>ตรวจ</button>
       </div>
 
