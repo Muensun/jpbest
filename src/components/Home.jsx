@@ -1,6 +1,6 @@
 import XpBar from "./XpBar.jsx";
 
-export default function Home({ xp, onExplore, onChallenge }) {
+export default function Home({ xp, onExplore, onChallenge, onWrite }) {
   return (
     <div className="home-page">
       <h1 className="app-title">JPBest 🇯🇵</h1>
@@ -13,6 +13,11 @@ export default function Home({ xp, onExplore, onChallenge }) {
           <span className="menu-card-icon">📖</span>
           <span className="menu-card-label">EXPLORE</span>
           <span className="menu-card-desc">จำตัวอักษร คำศัพท์ และประโยค</span>
+        </button>
+        <button className="menu-card menu-card-write" onClick={onWrite}>
+          <span className="menu-card-icon">✍️</span>
+          <span className="menu-card-label">WRITE</span>
+          <span className="menu-card-desc">ฝึกลากเส้นตัวอักษรให้ใกล้เคียง</span>
         </button>
         <button className="menu-card menu-card-challenge" onClick={onChallenge}>
           <span className="menu-card-icon">🎯</span>

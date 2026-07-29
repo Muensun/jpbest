@@ -4,14 +4,16 @@ import { useGamification } from "./useGamification.js";
 import Home from "./components/Home.jsx";
 import ExploreMenu from "./components/ExploreMenu.jsx";
 import ChallengeMenu from "./components/ChallengeMenu.jsx";
+import WriteMenu from "./components/WriteMenu.jsx";
 import StudyDeck from "./components/StudyDeck.jsx";
 import QuizDeck from "./components/QuizDeck.jsx";
+import WriteDeck from "./components/WriteDeck.jsx";
 import "./App.css";
 
 export default function App() {
   const { progress, markCard, recordQuizResult } = useProgress();
   const gamification = useGamification();
-  const [screen, setScreen] = useState("home"); // "home" | "explore" | "challenge"
+  const [screen, setScreen] = useState("home"); // "home" | "explore" | "challenge" | "write"
   const [selection, setSelection] = useState(null); // { type, group }
 
   const goHome = () => {
@@ -67,12 +69,22 @@ export default function App() {
         onSelect={(type, group) => setSelection({ type, group })}
       />
     );
+  } else if (screen === "write" && selection) {
+    content = <WriteDeck cards={selection.group.cards} onBack={backToMenu} />;
+  } else if (screen === "write") {
+    content = (
+      <WriteMenu
+        onBack={goHome}
+        onSelect={(type, group) => setSelection({ type, group })}
+      />
+    );
   } else {
     content = (
       <Home
         xp={gamification}
         onExplore={() => setScreen("explore")}
         onChallenge={() => setScreen("challenge")}
+        onWrite={() => setScreen("write")}
       />
     );
   }
