@@ -5,11 +5,11 @@
   padding: 24px 16px 48px;
 }
 
-/* ---------- Deck menu ---------- */
+/* ---------- Home page ---------- */
 
-.deck-menu {
+.home-page {
   width: 100%;
-  max-width: 640px;
+  max-width: 480px;
 }
 
 .app-title {
@@ -21,15 +21,144 @@
 .app-subtitle {
   text-align: center;
   color: var(--text);
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
-.deck-section {
+.home-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.menu-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  border: none;
+  border-radius: 18px;
+  padding: 20px 22px;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.1s ease;
+  color: white;
+}
+
+.menu-card:active {
+  transform: scale(0.98);
+}
+
+.menu-card-explore {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+}
+
+.menu-card-challenge {
+  background: linear-gradient(135deg, #ff8a5c, #ff5c7a);
+}
+
+.menu-card-icon {
+  font-size: 28px;
+}
+
+.menu-card-label {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.menu-card-desc {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.home-more-hint {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text);
+  opacity: 0.6;
+  margin-top: 28px;
+}
+
+/* ---------- XP bar ---------- */
+
+.xp-bar-wrap {
+  margin: 4px 0 8px;
+}
+
+.xp-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-h);
+  margin-bottom: 6px;
+}
+
+.xp-bar-track {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.xp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+/* ---------- Explore / Challenge menu pages ---------- */
+
+.menu-page {
+  width: 100%;
+  max-width: 640px;
+}
+
+.menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.menu-header-spacer {
+  width: 40px;
+}
+
+.menu-title {
+  font-size: 20px;
+  letter-spacing: 1px;
+}
+
+.menu-subtitle {
+  text-align: center;
+  color: var(--text);
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.category-block {
   margin-bottom: 28px;
 }
 
-.deck-section-title {
-  font-size: 18px;
+.category-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.deck-block {
+  margin-bottom: 20px;
+}
+
+.deck-block-title {
+  font-size: 16px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -78,6 +207,12 @@
   font-size: 13px;
   color: var(--accent);
   font-weight: 600;
+}
+
+.group-card-stars {
+  font-size: 15px;
+  color: #f5a623;
+  letter-spacing: 1px;
 }
 
 .group-card-actions {
@@ -218,6 +353,21 @@
   color: var(--text);
 }
 
+.sentence-text {
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--text-h);
+  line-height: 1.4;
+  text-align: center;
+}
+
+.sentence-kanji-text {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--accent);
+  text-align: center;
+}
+
 .hint-text {
   font-size: 13px;
   color: var(--text);
@@ -298,8 +448,26 @@
   margin: 12px 0 20px;
 }
 
+.quiz-stars {
+  font-size: 32px;
+  color: #f5a623;
+  letter-spacing: 4px;
+  margin-bottom: 4px;
+}
+
+.quiz-xp {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--good);
+  margin-bottom: 20px;
+}
+
 @media (max-width: 480px) {
   .kana-text {
     font-size: 52px;
+  }
+
+  .sentence-text {
+    font-size: 20px;
   }
 }

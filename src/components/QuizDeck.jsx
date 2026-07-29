@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 function shuffle(arr) {
   const a = [...arr];
@@ -18,11 +18,19 @@ function buildQuestion(cards, correctIndex) {
   return { correct, choices };
 }
 
-export default function QuizDeck({ deckKey, type, cards, onBack }) {
+function computeResult(score) {
+  const accuracy = score.total ? score.correct / score.total : 0;
+  const stars = accuracy >= 0.9 ? 3 : accuracy >= 0.7 ? 2 : accuracy >= 0.5 ? 1 : 0;
+  const xpEarned = score.correct * 10 + (accuracy === 1 ? 20 : 0);
+  return { stars, xpEarned, accuracy };
+}
+
+export default function QuizDeck({ deckKey, type, cards, onBack, onFinish }) {
   const [order] = useState(() => shuffle(cards.map((_, i) => i)));
   const [pos, setPos] = useState(0);
   const [selected, setSelected] = useState(null);
   const [score, setScore] = useState({ correct: 0, total: 0 });
+  const reportedRef = useRef(false);
 
   const question = useMemo(
     () => buildQuestion(cards, order[pos]),
@@ -30,6 +38,14 @@ export default function QuizDeck({ deckKey, type, cards, onBack }) {
   );
 
   const finished = pos >= order.length;
+  const result = useMemo(() => computeResult(score), [score]);
+
+  useEffect(() => {
+    if (finished && !reportedRef.current && score.total > 0) {
+      reportedRef.current = true;
+      onFinish(deckKey, result);
+    }
+  }, [finished, score.total, deckKey, result, onFinish]);
 
   const choose = (choice) => {
     if (selected) return;
@@ -46,6 +62,7 @@ export default function QuizDeck({ deckKey, type, cards, onBack }) {
   };
 
   const restart = () => {
+    reportedRef.current = false;
     setPos(0);
     setSelected(null);
     setScore({ correct: 0, total: 0 });
@@ -59,6 +76,11 @@ export default function QuizDeck({ deckKey, type, cards, onBack }) {
         <p className="quiz-score">
           ตอบถูก {score.correct} / {score.total}
         </p>
+        <p className="quiz-stars">
+          {"★".repeat(result.stars)}
+          {"☆".repeat(3 - result.stars)}
+        </p>
+        <p className="quiz-xp">+{result.xpEarned} XP</p>
         <div className="study-actions">
           <button className="btn btn-yes" onClick={restart}>ทำอีกครั้ง</button>
         </div>
@@ -76,15 +98,19 @@ export default function QuizDeck({ deckKey, type, cards, onBack }) {
       </div>
 
       <div className="quiz-question">
-        <span className="kana-text">{question.correct.kana}</span>
-        {type === "vocab" && question.correct.kanji && (
-          <span className="kanji-text">{question.correct.kanji}</span>
+        <span className={type === "sentences" ? "sentence-text" : "kana-text"}>
+          {question.correct.kana}
+        </span>
+        {(type === "vocab" || type === "sentences") && question.correct.kanji && (
+          <span className={type === "sentences" ? "sentence-kanji-text" : "kanji-text"}>
+            {question.correct.kanji}
+          </span>
         )}
       </div>
 
       <div className="quiz-choices">
         {question.choices.map((choice, i) => {
-          const label = type === "vocab" ? choice.meaning : choice.romaji;
+          const label = type === "vocab" || type === "sentences" ? choice.meaning : choice.romaji;
           let cls = "quiz-choice";
           if (selected) {
             if (choice === question.correct) cls += " is-correct";

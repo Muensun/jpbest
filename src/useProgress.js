@@ -25,9 +25,17 @@ export function useProgress() {
       const known = new Set(entry.known);
       if (isKnown) known.add(cardId);
       else known.delete(cardId);
-      return { ...prev, [deckKey]: { known: [...known] } };
+      return { ...prev, [deckKey]: { ...entry, known: [...known] } };
     });
   };
 
-  return { progress, markCard };
+  const recordQuizResult = (deckKey, result) => {
+    setProgress((prev) => {
+      const entry = prev[deckKey] ?? { known: [] };
+      const bestStars = Math.max(entry.bestStars ?? 0, result.stars);
+      return { ...prev, [deckKey]: { ...entry, bestStars } };
+    });
+  };
+
+  return { progress, markCard, recordQuizResult };
 }

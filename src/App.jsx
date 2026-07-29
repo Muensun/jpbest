@@ -1,57 +1,81 @@
 import { useState } from "react";
-import { hiraganaGroups } from "./data/hiragana.js";
-import { katakanaGroups } from "./data/katakana.js";
-import { vocabGroups } from "./data/vocab.js";
 import { useProgress } from "./useProgress.js";
-import DeckMenu from "./components/DeckMenu.jsx";
+import { useGamification } from "./useGamification.js";
+import Home from "./components/Home.jsx";
+import ExploreMenu from "./components/ExploreMenu.jsx";
+import ChallengeMenu from "./components/ChallengeMenu.jsx";
 import StudyDeck from "./components/StudyDeck.jsx";
 import QuizDeck from "./components/QuizDeck.jsx";
 import "./App.css";
 
-const dataByType = {
-  hiragana: hiraganaGroups,
-  katakana: katakanaGroups,
-  vocab: vocabGroups,
-};
-
 export default function App() {
-  const { progress, markCard } = useProgress();
-  const [active, setActive] = useState(null); // { type, group, mode }
+  const { progress, markCard, recordQuizResult } = useProgress();
+  const gamification = useGamification();
+  const [screen, setScreen] = useState("home"); // "home" | "explore" | "challenge"
+  const [selection, setSelection] = useState(null); // { type, group }
 
-  const handleSelect = (type, group, mode) => setActive({ type, group, mode });
-  const handleBack = () => setActive(null);
+  const goHome = () => {
+    setScreen("home");
+    setSelection(null);
+  };
+  const backToMenu = () => setSelection(null);
 
-  if (active) {
-    const deckKey = `${active.type}:${active.group.id}`;
-    if (active.mode === "study") {
-      return (
-        <div className="app-shell">
-          <StudyDeck
-            deckKey={deckKey}
-            type={active.type}
-            cards={active.group.cards}
-            progress={progress}
-            onMark={markCard}
-            onBack={handleBack}
-          />
-        </div>
-      );
-    }
-    return (
-      <div className="app-shell">
-        <QuizDeck
-          deckKey={deckKey}
-          type={active.type}
-          cards={active.group.cards}
-          onBack={handleBack}
-        />
-      </div>
+  const handleFinishQuiz = (deckKey, result) => {
+    recordQuizResult(deckKey, result);
+    gamification.addXp(result.xpEarned);
+  };
+
+  let content;
+
+  if (screen === "explore" && selection) {
+    const deckKey = `${selection.type}:${selection.group.id}`;
+    content = (
+      <StudyDeck
+        deckKey={deckKey}
+        type={selection.type}
+        cards={selection.group.cards}
+        progress={progress}
+        onMark={markCard}
+        onBack={backToMenu}
+      />
+    );
+  } else if (screen === "explore") {
+    content = (
+      <ExploreMenu
+        progress={progress}
+        onBack={goHome}
+        onSelect={(type, group) => setSelection({ type, group })}
+      />
+    );
+  } else if (screen === "challenge" && selection) {
+    const deckKey = `${selection.type}:${selection.group.id}`;
+    content = (
+      <QuizDeck
+        deckKey={deckKey}
+        type={selection.type}
+        cards={selection.group.cards}
+        onBack={backToMenu}
+        onFinish={handleFinishQuiz}
+      />
+    );
+  } else if (screen === "challenge") {
+    content = (
+      <ChallengeMenu
+        progress={progress}
+        xp={gamification}
+        onBack={goHome}
+        onSelect={(type, group) => setSelection({ type, group })}
+      />
+    );
+  } else {
+    content = (
+      <Home
+        xp={gamification}
+        onExplore={() => setScreen("explore")}
+        onChallenge={() => setScreen("challenge")}
+      />
     );
   }
 
-  return (
-    <div className="app-shell">
-      <DeckMenu dataByType={dataByType} progress={progress} onSelect={handleSelect} />
-    </div>
-  );
+  return <div className="app-shell">{content}</div>;
 }
