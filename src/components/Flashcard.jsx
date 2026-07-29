@@ -1,3 +1,5 @@
+import { thaiReading } from "../data/kanaThai.js";
+
 export default function Flashcard({ card, type, flipped, onFlip }) {
   const isSentence = type === "sentences";
   const isTextHeavy = type === "vocab" || isSentence;
@@ -18,7 +20,10 @@ export default function Flashcard({ card, type, flipped, onFlip }) {
               <span className="meaning-text">{card.meaning}</span>
             </>
           ) : (
-            <span className="romaji-text-big">{card.romaji}</span>
+            <>
+              <span className="romaji-text-big">{card.romaji}</span>
+              <span className="thai-reading-text">{thaiReading(card.romaji)}</span>
+            </>
           )}
         </div>
       </div>

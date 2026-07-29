@@ -285,6 +285,97 @@
   font-weight: 600;
 }
 
+/* ---------- Deck table ---------- */
+
+.deck-table-wrap {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.deck-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.deck-table th {
+  text-align: left;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--text);
+  opacity: 0.7;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+}
+
+.deck-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.deck-table tbody tr {
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+
+.deck-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.deck-table tbody tr:active,
+.deck-table tbody tr:hover {
+  background: var(--good-bg);
+}
+
+.deck-table tbody tr.is-known {
+  background: var(--good-bg);
+}
+
+.deck-table-kana {
+  font-weight: 700;
+  color: var(--text-h);
+  font-size: 18px;
+}
+
+.deck-table-check {
+  color: var(--good);
+  margin-right: 6px;
+  font-weight: 700;
+}
+
+.deck-table-romaji {
+  color: var(--text);
+}
+
+.deck-table-thai {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.deck-table td,
+.deck-table th {
+  word-break: break-word;
+}
+
+.deck-table--vocab .deck-table-kana,
+.deck-table--sentences .deck-table-kana {
+  font-size: 15px;
+}
+
+.deck-table--vocab .deck-table-romaji,
+.deck-table--sentences .deck-table-romaji {
+  font-size: 13px;
+}
+
 .flashcard-wrap {
   width: 100%;
   aspect-ratio: 4 / 3;
@@ -346,6 +437,11 @@
   font-size: 40px;
   font-weight: 600;
   color: var(--accent);
+}
+
+.thai-reading-text {
+  font-size: 20px;
+  color: var(--text);
 }
 
 .meaning-text {

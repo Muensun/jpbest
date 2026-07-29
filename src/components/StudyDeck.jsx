@@ -1,26 +1,40 @@
 import { useState } from "react";
 import Flashcard from "./Flashcard.jsx";
-
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+import DeckTable from "./DeckTable.jsx";
 
 export default function StudyDeck({ deckKey, type, cards, progress, onMark, onBack }) {
-  const [order, setOrder] = useState(() => shuffle(cards.map((_, i) => i)));
-  const [pos, setPos] = useState(0);
+  const [pos, setPos] = useState(null); // null = table view, index = focus view
   const [flipped, setFlipped] = useState(false);
 
-  const card = cards[order[pos]];
-  const known = progress[deckKey]?.known?.length ?? 0;
+  const knownSet = new Set(progress[deckKey]?.known ?? []);
+
+  if (pos === null) {
+    return (
+      <div className="study-view">
+        <div className="study-header">
+          <button className="btn-link" onClick={onBack}>← กลับ</button>
+          <div className="study-progress">จำได้แล้ว {knownSet.size}/{cards.length} คำ</div>
+          <span className="menu-header-spacer" />
+        </div>
+        <p className="hint-text">แตะแถวเพื่อดูทีละคำ</p>
+        <DeckTable
+          cards={cards}
+          type={type}
+          knownSet={knownSet}
+          onRowClick={(i) => {
+            setPos(i);
+            setFlipped(false);
+          }}
+        />
+      </div>
+    );
+  }
+
+  const card = cards[pos];
 
   const goNext = () => {
     setFlipped(false);
-    setPos((p) => (p + 1) % order.length);
+    setPos((p) => (p + 1) % cards.length);
   };
 
   const mark = (isKnown) => {
@@ -28,20 +42,12 @@ export default function StudyDeck({ deckKey, type, cards, progress, onMark, onBa
     goNext();
   };
 
-  const reshuffle = () => {
-    setOrder(shuffle(cards.map((_, i) => i)));
-    setPos(0);
-    setFlipped(false);
-  };
-
   return (
     <div className="study-view">
       <div className="study-header">
-        <button className="btn-link" onClick={onBack}>← กลับ</button>
-        <div className="study-progress">
-          {pos + 1} / {order.length} · จำได้แล้ว {known} คำ
-        </div>
-        <button className="btn-link" onClick={reshuffle}>สลับใหม่</button>
+        <button className="btn-link" onClick={() => setPos(null)}>← ตาราง</button>
+        <div className="study-progress">{pos + 1} / {cards.length}</div>
+        <span className="menu-header-spacer" />
       </div>
 
       <Flashcard card={card} type={type} flipped={flipped} onFlip={() => setFlipped((f) => !f)} />
