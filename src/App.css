@@ -12,6 +12,96 @@
   max-width: 480px;
 }
 
+.home-lang-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 4px;
+  position: relative;
+}
+
+.lang-switch {
+  position: relative;
+}
+
+.lang-switch-trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-h);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+.lang-switch-globe {
+  font-size: 15px;
+}
+
+.lang-switch-chevron {
+  font-size: 10px;
+  color: var(--text);
+  transition: transform 0.15s ease;
+}
+
+.lang-switch-chevron.is-open {
+  transform: rotate(180deg);
+}
+
+.lang-switch-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 160px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  z-index: 10;
+}
+
+.lang-switch-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: none;
+  background: var(--surface);
+  color: var(--text-h);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+}
+
+.lang-switch-option + .lang-switch-option {
+  border-top: 1px solid var(--border);
+}
+
+.lang-switch-option.is-selected {
+  background: var(--good-bg);
+  color: var(--accent);
+}
+
+.lang-switch-flag {
+  font-size: 16px;
+}
+
+.lang-switch-name {
+  flex: 1;
+}
+
+.lang-switch-check {
+  color: var(--accent);
+  font-weight: 700;
+}
+
 .app-logo {
   display: block;
   width: 72px;

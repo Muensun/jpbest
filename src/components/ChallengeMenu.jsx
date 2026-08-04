@@ -1,17 +1,20 @@
 import { DECK_SECTIONS } from "../data/sections.js";
 import CategoryDeckList from "./CategoryDeckList.jsx";
 import XpBar from "./XpBar.jsx";
+import { useLanguage } from "../i18n.jsx";
 
 export default function ChallengeMenu({ progress, xp, onBack, onSelect }) {
+  const { t } = useLanguage();
+
   return (
     <div className="menu-page">
       <div className="menu-header">
-        <button className="btn-link" onClick={onBack}>← กลับ</button>
-        <h1 className="menu-title">CHALLENGE</h1>
+        <button className="btn-link" onClick={onBack}>{t("nav.back")}</button>
+        <h1 className="menu-title">{t("nav.challenge")}</h1>
         <span className="menu-header-spacer" />
       </div>
       <XpBar level={xp.level} xpIntoLevel={xp.xpIntoLevel} xpForLevel={xp.xpForLevel} />
-      <p className="menu-subtitle">ทำแบบทดสอบเพื่อสะสม XP และดาว</p>
+      <p className="menu-subtitle">{t("challengeMenu.subtitle")}</p>
 
       <CategoryDeckList
         sections={DECK_SECTIONS}
@@ -27,7 +30,7 @@ export default function ChallengeMenu({ progress, xp, onBack, onSelect }) {
         }}
         renderActions={(type, group) => (
           <button className="btn btn-skip" onClick={() => onSelect(type, group)}>
-            เริ่มทำแบบทดสอบ
+            {t("challengeMenu.action")}
           </button>
         )}
       />

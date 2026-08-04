@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useLanguage } from "../i18n.jsx";
 
 const SIZE = 300; // CSS px, canvas is square
 
@@ -17,6 +18,7 @@ function drawGlyph(canvas, dpr, char, color) {
 }
 
 export default function WriteDeck({ cards, onBack }) {
+  const { t } = useLanguage();
   const [pos, setPos] = useState(0);
   const [score, setScore] = useState(null);
   const [mode, setMode] = useState("guide"); // "guide" | "blind"
@@ -131,7 +133,7 @@ export default function WriteDeck({ cards, onBack }) {
   return (
     <div className="write-view">
       <div className="study-header">
-        <button className="btn-link" onClick={onBack}>← กลับ</button>
+        <button className="btn-link" onClick={onBack}>{t("nav.back")}</button>
         <div className="study-progress">{pos + 1} / {cards.length}</div>
         <span className="menu-header-spacer" />
       </div>
@@ -141,13 +143,13 @@ export default function WriteDeck({ cards, onBack }) {
           className={`write-mode-btn ${mode === "guide" ? "is-active" : ""}`}
           onClick={() => changeMode("guide")}
         >
-          มีเส้นให้ลอก
+          {t("write.modeGuide")}
         </button>
         <button
           className={`write-mode-btn ${mode === "blind" ? "is-active" : ""}`}
           onClick={() => changeMode("blind")}
         >
-          ไม่มีเส้น (ท่องจำ)
+          {t("write.modeBlind")}
         </button>
       </div>
 
@@ -167,28 +169,26 @@ export default function WriteDeck({ cards, onBack }) {
       </div>
 
       <p className="hint-text">
-        {mode === "guide"
-          ? "ลากนิ้วหรือเมาส์ทับตัวจาง ๆ ให้ใกล้เคียงที่สุด"
-          : "เขียนจากความจำ แล้วกด \"ดูเฉลย\" เพื่อเทียบ"}
+        {mode === "guide" ? t("write.hintGuide") : t("write.hintBlind")}
       </p>
 
       <p className={`write-score ${scoreClass}`}>
-        {score === null ? " " : `ใกล้เคียง ${score}%`}
+        {score === null ? " " : t("write.scoreLabel", { score })}
       </p>
 
       <div className="study-actions">
-        <button className="btn btn-skip" onClick={clearInk}>ล้าง</button>
+        <button className="btn btn-skip" onClick={clearInk}>{t("write.clear")}</button>
         {mode === "blind" && (
           <button className="btn btn-skip" onClick={() => setShowAnswer((s) => !s)}>
-            {showAnswer ? "ซ่อนเฉลย" : "ดูเฉลย"}
+            {showAnswer ? t("write.hideAnswer") : t("write.showAnswer")}
           </button>
         )}
-        <button className="btn btn-yes" onClick={checkScore}>ตรวจ</button>
+        <button className="btn btn-yes" onClick={checkScore}>{t("write.check")}</button>
       </div>
 
       <div className="write-nav">
-        <button className="btn-link" onClick={goPrev}>← ก่อนหน้า</button>
-        <button className="btn-link" onClick={goNext}>ถัดไป →</button>
+        <button className="btn-link" onClick={goPrev}>{t("write.prev")}</button>
+        <button className="btn-link" onClick={goNext}>{t("write.next")}</button>
       </div>
     </div>
   );

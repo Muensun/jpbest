@@ -1,6 +1,8 @@
 import { thaiReading } from "../data/kanaThai.js";
+import { useLanguage } from "../i18n.jsx";
 
 export default function DeckTable({ cards, type, knownSet, onRowClick }) {
+  const { t } = useLanguage();
   const isTextHeavy = type === "vocab" || type === "sentences";
 
   return (
@@ -8,9 +10,9 @@ export default function DeckTable({ cards, type, knownSet, onRowClick }) {
       <table className={`deck-table deck-table--${type}`}>
         <thead>
           <tr>
-            <th>{isTextHeavy ? "คำ/ประโยค" : "ตัวอักษร"}</th>
-            <th>โรมาจิ</th>
-            <th>ไทย</th>
+            <th>{isTextHeavy ? t("table.headerWordSentence") : t("table.headerCharacter")}</th>
+            <th>{t("table.headerRomaji")}</th>
+            <th>{t("table.headerThai")}</th>
           </tr>
         </thead>
         <tbody>

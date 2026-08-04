@@ -5,17 +5,17 @@ import { sentenceGroups } from "./sentences.js";
 
 export const DECK_SECTIONS = [
   {
-    category: "ตัวอักษร",
+    id: "characters",
     decks: [
-      { type: "hiragana", label: "ひらがな Hiragana", emoji: "あ", groups: hiraganaGroups },
-      { type: "katakana", label: "カタカナ Katakana", emoji: "ア", groups: katakanaGroups },
+      { type: "hiragana", emoji: "あ", groups: hiraganaGroups },
+      { type: "katakana", emoji: "ア", groups: katakanaGroups },
     ],
   },
   {
-    category: "คำและประโยค",
+    id: "wordsSentences",
     decks: [
-      { type: "vocab", label: "คำศัพท์ N5", emoji: "語", groups: vocabGroups },
-      { type: "sentences", label: "ประโยค N5", emoji: "文", groups: sentenceGroups },
+      { type: "vocab", emoji: "語", groups: vocabGroups },
+      { type: "sentences", emoji: "文", groups: sentenceGroups },
     ],
   },
 ];

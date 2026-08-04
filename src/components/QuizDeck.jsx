@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useLanguage } from "../i18n.jsx";
 
 function shuffle(arr) {
   const a = [...arr];
@@ -26,6 +27,7 @@ function computeResult(score) {
 }
 
 export default function QuizDeck({ deckKey, type, cards, onBack, onFinish }) {
+  const { t } = useLanguage();
   const [order] = useState(() => shuffle(cards.map((_, i) => i)));
   const [pos, setPos] = useState(0);
   const [selected, setSelected] = useState(null);
@@ -71,10 +73,10 @@ export default function QuizDeck({ deckKey, type, cards, onBack, onFinish }) {
   if (finished) {
     return (
       <div className="quiz-view quiz-result">
-        <button className="btn-link" onClick={onBack}>← กลับ</button>
-        <h2>สรุปผล</h2>
+        <button className="btn-link" onClick={onBack}>{t("nav.back")}</button>
+        <h2>{t("quiz.resultTitle")}</h2>
         <p className="quiz-score">
-          ตอบถูก {score.correct} / {score.total}
+          {t("quiz.resultScore", { correct: score.correct, total: score.total })}
         </p>
         <p className="quiz-stars">
           {"★".repeat(result.stars)}
@@ -82,7 +84,7 @@ export default function QuizDeck({ deckKey, type, cards, onBack, onFinish }) {
         </p>
         <p className="quiz-xp">+{result.xpEarned} XP</p>
         <div className="study-actions">
-          <button className="btn btn-yes" onClick={restart}>ทำอีกครั้ง</button>
+          <button className="btn btn-yes" onClick={restart}>{t("quiz.retry")}</button>
         </div>
       </div>
     );
@@ -91,9 +93,9 @@ export default function QuizDeck({ deckKey, type, cards, onBack, onFinish }) {
   return (
     <div className="quiz-view">
       <div className="study-header">
-        <button className="btn-link" onClick={onBack}>← กลับ</button>
+        <button className="btn-link" onClick={onBack}>{t("nav.back")}</button>
         <div className="study-progress">
-          {pos + 1} / {order.length} · ถูก {score.correct}
+          {t("quiz.progress", { pos: pos + 1, total: order.length, correct: score.correct })}
         </div>
       </div>
 
@@ -131,7 +133,7 @@ export default function QuizDeck({ deckKey, type, cards, onBack, onFinish }) {
 
       {selected && (
         <button className="btn btn-yes quiz-next" onClick={next}>
-          ถัดไป →
+          {t("quiz.next")}
         </button>
       )}
     </div>
