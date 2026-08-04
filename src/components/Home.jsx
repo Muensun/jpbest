@@ -3,7 +3,8 @@ import XpBar from "./XpBar.jsx";
 export default function Home({ xp, onExplore, onChallenge, onWrite }) {
   return (
     <div className="home-page">
-      <h1 className="app-title">JPTalk 🇯🇵</h1>
+      <img src="/logo.png" alt="JPTalk" className="app-logo" />
+      <h1 className="app-title">JPTalk</h1>
       <p className="app-subtitle">ฝึกภาษาญี่ปุ่นทีละก้าว จากฮิรางานะถึงประโยคง่ายๆ</p>
 
       <XpBar level={xp.level} xpIntoLevel={xp.xpIntoLevel} xpForLevel={xp.xpForLevel} />
