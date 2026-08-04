@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useProgress } from "./useProgress.js";
 import { useGamification } from "./useGamification.js";
+import { useStreak } from "./useStreak.js";
 import Home from "./components/Home.jsx";
 import ExploreMenu from "./components/ExploreMenu.jsx";
 import ChallengeMenu from "./components/ChallengeMenu.jsx";
@@ -11,8 +12,9 @@ import WriteDeck from "./components/WriteDeck.jsx";
 import "./App.css";
 
 export default function App() {
-  const { progress, markCard, recordQuizResult } = useProgress();
+  const { progress, markCard, recordQuizResult, getCardState } = useProgress();
   const gamification = useGamification();
+  const streak = useStreak();
   const [screen, setScreen] = useState("home"); // "home" | "explore" | "challenge" | "write"
   const [selection, setSelection] = useState(null); // { type, group }
 
@@ -25,6 +27,7 @@ export default function App() {
   const handleFinishQuiz = (deckKey, result) => {
     recordQuizResult(deckKey, result);
     gamification.addXp(result.xpEarned);
+    streak.recordActivity();
   };
 
   let content;
@@ -36,8 +39,9 @@ export default function App() {
         deckKey={deckKey}
         type={selection.type}
         cards={selection.group.cards}
-        progress={progress}
+        getCardState={getCardState}
         onMark={markCard}
+        onActivity={streak.recordActivity}
         onBack={backToMenu}
       />
     );
@@ -70,7 +74,13 @@ export default function App() {
       />
     );
   } else if (screen === "write" && selection) {
-    content = <WriteDeck cards={selection.group.cards} onBack={backToMenu} />;
+    content = (
+      <WriteDeck
+        cards={selection.group.cards}
+        onBack={backToMenu}
+        onActivity={streak.recordActivity}
+      />
+    );
   } else if (screen === "write") {
     content = (
       <WriteMenu
@@ -82,6 +92,7 @@ export default function App() {
     content = (
       <Home
         xp={gamification}
+        streak={streak}
         onExplore={() => setScreen("explore")}
         onChallenge={() => setScreen("challenge")}
         onWrite={() => setScreen("write")}

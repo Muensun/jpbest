@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLanguage } from "../i18n.jsx";
 
+const COMBO_MILESTONES = [3, 5, 10];
+
 function shuffle(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -19,11 +21,11 @@ function buildQuestion(cards, correctIndex) {
   return { correct, choices };
 }
 
-function computeResult(score) {
+function computeResult(score, comboBonusXp, maxCombo) {
   const accuracy = score.total ? score.correct / score.total : 0;
   const stars = accuracy >= 0.9 ? 3 : accuracy >= 0.7 ? 2 : accuracy >= 0.5 ? 1 : 0;
-  const xpEarned = score.correct * 10 + (accuracy === 1 ? 20 : 0);
-  return { stars, xpEarned, accuracy };
+  const xpEarned = score.correct * 10 + (accuracy === 1 ? 20 : 0) + comboBonusXp;
+  return { stars, xpEarned, accuracy, maxCombo, comboBonusXp };
 }
 
 export default function QuizDeck({ deckKey, type, cards, onBack, onFinish }) {
@@ -32,6 +34,10 @@ export default function QuizDeck({ deckKey, type, cards, onBack, onFinish }) {
   const [pos, setPos] = useState(0);
   const [selected, setSelected] = useState(null);
   const [score, setScore] = useState({ correct: 0, total: 0 });
+  const [combo, setCombo] = useState(0);
+  const [maxCombo, setMaxCombo] = useState(0);
+  const comboBonusRef = useRef(0);
+  const reachedMilestonesRef = useRef(new Set());
   const reportedRef = useRef(false);
 
   const question = useMemo(
@@ -40,7 +46,10 @@ export default function QuizDeck({ deckKey, type, cards, onBack, onFinish }) {
   );
 
   const finished = pos >= order.length;
-  const result = useMemo(() => computeResult(score), [score]);
+  const result = useMemo(
+    () => computeResult(score, comboBonusRef.current, maxCombo),
+    [score, maxCombo]
+  );
 
   useEffect(() => {
     if (finished && !reportedRef.current && score.total > 0) {
@@ -52,10 +61,26 @@ export default function QuizDeck({ deckKey, type, cards, onBack, onFinish }) {
   const choose = (choice) => {
     if (selected) return;
     setSelected(choice);
+    const isCorrect = choice === question.correct;
     setScore((s) => ({
-      correct: s.correct + (choice === question.correct ? 1 : 0),
+      correct: s.correct + (isCorrect ? 1 : 0),
       total: s.total + 1,
     }));
+    if (isCorrect) {
+      setCombo((c) => {
+        const next = c + 1;
+        setMaxCombo((m) => Math.max(m, next));
+        COMBO_MILESTONES.forEach((ms) => {
+          if (next === ms && !reachedMilestonesRef.current.has(ms)) {
+            reachedMilestonesRef.current.add(ms);
+            comboBonusRef.current += ms;
+          }
+        });
+        return next;
+      });
+    } else {
+      setCombo(0);
+    }
   };
 
   const next = () => {
@@ -65,9 +90,13 @@ export default function QuizDeck({ deckKey, type, cards, onBack, onFinish }) {
 
   const restart = () => {
     reportedRef.current = false;
+    comboBonusRef.current = 0;
+    reachedMilestonesRef.current = new Set();
     setPos(0);
     setSelected(null);
     setScore({ correct: 0, total: 0 });
+    setCombo(0);
+    setMaxCombo(0);
   };
 
   if (finished) {
@@ -83,6 +112,9 @@ export default function QuizDeck({ deckKey, type, cards, onBack, onFinish }) {
           {"☆".repeat(3 - result.stars)}
         </p>
         <p className="quiz-xp">+{result.xpEarned} XP</p>
+        {result.comboBonusXp > 0 && (
+          <p className="quiz-combo-bonus">{t("quiz.comboBonus", { xp: result.comboBonusXp })}</p>
+        )}
         <div className="study-actions">
           <button className="btn btn-yes" onClick={restart}>{t("quiz.retry")}</button>
         </div>
@@ -98,6 +130,10 @@ export default function QuizDeck({ deckKey, type, cards, onBack, onFinish }) {
           {t("quiz.progress", { pos: pos + 1, total: order.length, correct: score.correct })}
         </div>
       </div>
+
+      {combo >= 2 && (
+        <p className="quiz-combo">🔥 {t("quiz.combo", { combo })}</p>
+      )}
 
       <div className="quiz-question">
         <span className={type === "sentences" ? "sentence-text" : "kana-text"}>

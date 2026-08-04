@@ -21,10 +21,18 @@ export default function ChallengeMenu({ progress, xp, onBack, onSelect }) {
         renderMeta={(type, group) => {
           const key = `${type}:${group.id}`;
           const stars = progress[key]?.bestStars ?? 0;
+          const bestCombo = progress[key]?.bestCombo ?? 0;
           return (
-            <span className="group-card-stars">
-              {"★".repeat(stars)}
-              {"☆".repeat(3 - stars)}
+            <span className="group-card-meta">
+              <span className="group-card-stars">
+                {"★".repeat(stars)}
+                {"☆".repeat(3 - stars)}
+              </span>
+              {bestCombo >= 3 && (
+                <span className="group-card-combo">
+                  🔥 {t("challengeMenu.bestCombo", { combo: bestCombo })}
+                </span>
+              )}
             </span>
           );
         }}

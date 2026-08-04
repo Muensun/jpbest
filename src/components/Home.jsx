@@ -2,7 +2,7 @@ import XpBar from "./XpBar.jsx";
 import LanguageSwitcher from "./LanguageSwitcher.jsx";
 import { useLanguage } from "../i18n.jsx";
 
-export default function Home({ xp, onExplore, onChallenge, onWrite }) {
+export default function Home({ xp, streak, onExplore, onChallenge, onWrite }) {
   const { t } = useLanguage();
 
   return (
@@ -14,6 +14,15 @@ export default function Home({ xp, onExplore, onChallenge, onWrite }) {
       <img src="/logo.png" alt="JPTalk" className="app-logo" />
       <h1 className="app-title">JPTalk</h1>
       <p className="app-subtitle">{t("home.subtitle")}</p>
+
+      {streak.current > 0 && (
+        <div className="streak-badge">
+          <span>🔥 {t("streak.label", { days: streak.current })}</span>
+          {streak.longest > streak.current && (
+            <span className="streak-best">{t("streak.best", { days: streak.longest })}</span>
+          )}
+        </div>
+      )}
 
       <XpBar level={xp.level} xpIntoLevel={xp.xpIntoLevel} xpForLevel={xp.xpForLevel} />
 

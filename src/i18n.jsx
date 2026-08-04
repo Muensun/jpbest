@@ -54,6 +54,8 @@ export const translations = {
     "study.dontKnow": "ยังไม่รู้",
     "study.skip": "ข้าม",
     "study.know": "รู้แล้ว ✓",
+    "study.dueCount": "ถึงกำหนดทบทวน {count} คำ",
+    "study.reviewButton": "ทบทวนตอนนี้",
 
     "table.headerWordSentence": "คำ/ประโยค",
     "table.headerCharacter": "ตัวอักษร",
@@ -65,6 +67,13 @@ export const translations = {
     "quiz.resultScore": "ตอบถูก {correct} / {total}",
     "quiz.retry": "ทำอีกครั้ง",
     "quiz.next": "ถัดไป →",
+    "quiz.combo": "คอมโบ x{combo}",
+    "quiz.comboBonus": "+{xp} XP จากคอมโบ",
+
+    "streak.label": "{days} วันติดต่อกัน",
+    "streak.best": "สถิติสูงสุด {days} วัน",
+
+    "challengeMenu.bestCombo": "คอมโบสูงสุด x{combo}",
 
     "write.modeGuide": "มีเส้นให้ลอก",
     "write.modeBlind": "ไม่มีเส้น (ท่องจำ)",
@@ -129,6 +138,8 @@ export const translations = {
     "study.dontKnow": "Don't know yet",
     "study.skip": "Skip",
     "study.know": "Know it ✓",
+    "study.dueCount": "{count} due for review",
+    "study.reviewButton": "Review Now",
 
     "table.headerWordSentence": "Word / Sentence",
     "table.headerCharacter": "Character",
@@ -140,6 +151,13 @@ export const translations = {
     "quiz.resultScore": "Correct {correct} / {total}",
     "quiz.retry": "Try Again",
     "quiz.next": "Next →",
+    "quiz.combo": "Combo x{combo}",
+    "quiz.comboBonus": "+{xp} XP combo bonus",
+
+    "streak.label": "{days}-day streak",
+    "streak.best": "Best {days} days",
+
+    "challengeMenu.bestCombo": "Best combo x{combo}",
 
     "write.modeGuide": "With Guide",
     "write.modeBlind": "No Guide (Memory)",
@@ -204,6 +222,8 @@ export const translations = {
     "study.dontKnow": "まだ",
     "study.skip": "スキップ",
     "study.know": "覚えた ✓",
+    "study.dueCount": "復習が必要な単語 {count}個",
+    "study.reviewButton": "今すぐ復習",
 
     "table.headerWordSentence": "単語・文",
     "table.headerCharacter": "文字",
@@ -215,6 +235,13 @@ export const translations = {
     "quiz.resultScore": "正解 {correct} / {total}",
     "quiz.retry": "もう一度",
     "quiz.next": "次へ →",
+    "quiz.combo": "コンボ x{combo}",
+    "quiz.comboBonus": "コンボボーナス +{xp} XP",
+
+    "streak.label": "連続{days}日",
+    "streak.best": "自己ベスト {days}日",
+
+    "challengeMenu.bestCombo": "最高コンボ x{combo}",
 
     "write.modeGuide": "なぞり書き",
     "write.modeBlind": "見本なし(暗記)",

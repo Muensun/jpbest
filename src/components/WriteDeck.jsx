@@ -17,7 +17,7 @@ function drawGlyph(canvas, dpr, char, color) {
   return ctx;
 }
 
-export default function WriteDeck({ cards, onBack }) {
+export default function WriteDeck({ cards, onBack, onActivity }) {
   const { t } = useLanguage();
   const [pos, setPos] = useState(0);
   const [score, setScore] = useState(null);
@@ -122,6 +122,7 @@ export default function WriteDeck({ cards, onBack }) {
     const coverage = intersect / glyphCount;
     const precision = intersect / inkCount;
     setScore(Math.round(((coverage + precision) / 2) * 100));
+    onActivity();
   };
 
   const goPrev = () => setPos((p) => (p - 1 + cards.length) % cards.length);
