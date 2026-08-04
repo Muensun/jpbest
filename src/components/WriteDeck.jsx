@@ -33,7 +33,7 @@ export default function WriteDeck({ cards, onBack }) {
   const dpr = window.devicePixelRatio || 1;
 
   useEffect(() => {
-    drawGlyph(guideCanvasRef.current, dpr, card.kana, "rgba(139, 59, 255, 0.2)");
+    drawGlyph(guideCanvasRef.current, dpr, card.kana, "rgba(44, 104, 123, 0.2)");
 
     if (!maskCanvasRef.current) {
       maskCanvasRef.current = document.createElement("canvas");
@@ -67,7 +67,7 @@ export default function WriteDeck({ cards, onBack }) {
   const dot = (ctx, p) => {
     ctx.beginPath();
     ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
-    ctx.fillStyle = "#3a1b66";
+    ctx.fillStyle = "#1c4855";
     ctx.fill();
   };
 
@@ -84,7 +84,7 @@ export default function WriteDeck({ cards, onBack }) {
     if (!drawingRef.current) return;
     const ctx = inkCanvasRef.current.getContext("2d");
     const p = getPoint(e);
-    ctx.strokeStyle = "#3a1b66";
+    ctx.strokeStyle = "#1c4855";
     ctx.lineWidth = 10;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
