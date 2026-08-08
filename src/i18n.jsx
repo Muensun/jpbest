@@ -9,11 +9,13 @@ export const translations = {
     "nav.explore": "EXPLORE",
     "nav.write": "WRITE",
     "nav.challenge": "CHALLENGE",
+    "nav.build": "BUILD",
 
     "home.subtitle": "ฝึกภาษาญี่ปุ่นทีละก้าว จากฮิรางานะถึงประโยคง่ายๆ",
     "home.exploreDesc": "จำตัวอักษร คำศัพท์ และประโยค",
     "home.writeDesc": "ฝึกลากเส้นตัวอักษรให้ใกล้เคียง",
     "home.challengeDesc": "ทำแบบทดสอบ สะสม XP และดาว",
+    "home.buildDesc": "ต่อตัวอักษรให้เป็นคำศัพท์/ประโยค",
     "home.moreHint": "เมนูอื่น ๆ กำลังจะตามมาเร็ว ๆ นี้",
 
     "explore.subtitle": "จำตัวอักษร คำศัพท์ และประโยคด้วยบัตรคำ",
@@ -24,6 +26,13 @@ export const translations = {
 
     "writeMenu.subtitle": "ฝึกลากเส้นฮิรางานะ/คาตากานะให้ใกล้เคียงตัวจริง",
     "writeMenu.action": "ฝึกเขียน",
+
+    "buildMenu.subtitle": "ดูคำแปลไทย แล้วแตะตัวอักษรต่อกันให้เป็นคำอ่านที่ถูกต้อง",
+    "buildMenu.action": "เริ่มต่อคำ",
+
+    "build.undo": "ลบตัวล่าสุด",
+    "build.correct": "ถูกต้อง! 🎉",
+    "build.wrongAnswer": "ไม่ถูกนะ เฉลยคือ {answer}",
 
     "category.characters": "ตัวอักษร",
     "category.wordsSentences": "คำและประโยค",
@@ -93,11 +102,13 @@ export const translations = {
     "nav.explore": "EXPLORE",
     "nav.write": "WRITE",
     "nav.challenge": "CHALLENGE",
+    "nav.build": "BUILD",
 
     "home.subtitle": "Learn Japanese step by step, from hiragana to simple sentences",
     "home.exploreDesc": "Learn characters, vocabulary, and sentences",
     "home.writeDesc": "Practice tracing characters accurately",
     "home.challengeDesc": "Take quizzes to earn XP and stars",
+    "home.buildDesc": "Piece characters together into words/sentences",
     "home.moreHint": "More menus coming soon",
 
     "explore.subtitle": "Learn characters, vocabulary, and sentences with flashcards",
@@ -108,6 +119,13 @@ export const translations = {
 
     "writeMenu.subtitle": "Practice tracing hiragana/katakana as accurately as you can",
     "writeMenu.action": "Practice Writing",
+
+    "buildMenu.subtitle": "See the Thai meaning, then tap the characters to spell it correctly",
+    "buildMenu.action": "Start Building",
+
+    "build.undo": "Undo last",
+    "build.correct": "Correct! 🎉",
+    "build.wrongAnswer": "Not quite — the answer is {answer}",
 
     "category.characters": "Characters",
     "category.wordsSentences": "Words & Sentences",
@@ -177,11 +195,13 @@ export const translations = {
     "nav.explore": "EXPLORE",
     "nav.write": "WRITE",
     "nav.challenge": "CHALLENGE",
+    "nav.build": "BUILD",
 
     "home.subtitle": "ひらがなから簡単な文まで、一歩ずつ日本語を学ぼう",
     "home.exploreDesc": "文字・単語・文を覚えよう",
     "home.writeDesc": "文字をなぞって練習しよう",
     "home.challengeDesc": "クイズに挑戦してXPと星を集めよう",
+    "home.buildDesc": "文字を組み合わせて単語・文を作ろう",
     "home.moreHint": "他のメニューも近日公開予定",
 
     "explore.subtitle": "フラッシュカードで文字・単語・文を覚えよう",
@@ -192,6 +212,13 @@ export const translations = {
 
     "writeMenu.subtitle": "ひらがな・カタカナをできるだけ正確になぞって練習しよう",
     "writeMenu.action": "書く練習",
+
+    "buildMenu.subtitle": "タイ語の意味を見て、正しい読み方になるように文字をタップしよう",
+    "buildMenu.action": "組み立てる",
+
+    "build.undo": "1つ戻す",
+    "build.correct": "正解! 🎉",
+    "build.wrongAnswer": "違います。正解は {answer}",
 
     "category.characters": "文字",
     "category.wordsSentences": "単語と文",

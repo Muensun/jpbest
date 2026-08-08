@@ -2,7 +2,7 @@ import XpBar from "./XpBar.jsx";
 import LanguageSwitcher from "./LanguageSwitcher.jsx";
 import { useLanguage } from "../i18n.jsx";
 
-export default function Home({ xp, streak, onExplore, onChallenge, onWrite }) {
+export default function Home({ xp, streak, onExplore, onChallenge, onWrite, onBuild }) {
   const { t } = useLanguage();
 
   return (
@@ -36,6 +36,11 @@ export default function Home({ xp, streak, onExplore, onChallenge, onWrite }) {
           <span className="menu-card-icon">✍️</span>
           <span className="menu-card-label">{t("nav.write")}</span>
           <span className="menu-card-desc">{t("home.writeDesc")}</span>
+        </button>
+        <button className="menu-card menu-card-build" onClick={onBuild}>
+          <span className="menu-card-icon">🧩</span>
+          <span className="menu-card-label">{t("nav.build")}</span>
+          <span className="menu-card-desc">{t("home.buildDesc")}</span>
         </button>
         <button className="menu-card menu-card-challenge" onClick={onChallenge}>
           <span className="menu-card-icon">🎯</span>
