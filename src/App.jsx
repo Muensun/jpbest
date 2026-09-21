@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useProgress } from "./useProgress.js";
 import { useGamification } from "./useGamification.js";
 import { useStreak } from "./useStreak.js";
+import { useScrollRestore } from "./useScrollRestore.js";
 import Home from "./components/Home.jsx";
 import ExploreMenu from "./components/ExploreMenu.jsx";
 import ChallengeMenu from "./components/ChallengeMenu.jsx";
@@ -19,6 +20,12 @@ export default function App() {
   const streak = useStreak();
   const [screen, setScreen] = useState("home"); // "home" | "explore" | "challenge" | "write" | "build"
   const [selection, setSelection] = useState(null); // { type, group }
+
+  // คีย์ประจำหน้า ใช้บอก useScrollRestore ว่าตอนนี้อยู่หน้าไหน
+  const routeKey = selection
+    ? `${screen}:${selection.type}:${selection.group.id}`
+    : screen;
+  useScrollRestore(routeKey);
 
   const goHome = () => {
     setScreen("home");

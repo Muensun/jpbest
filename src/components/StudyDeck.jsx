@@ -3,6 +3,7 @@ import Flashcard from "./Flashcard.jsx";
 import DeckTable from "./DeckTable.jsx";
 import { useLanguage } from "../i18n.jsx";
 import { KNOWN_BOX_THRESHOLD } from "../useProgress.js";
+import { useScrollRestore } from "../useScrollRestore.js";
 
 export default function StudyDeck({ deckKey, type, cards, getCardState, onMark, onActivity, onBack }) {
   const { t } = useLanguage();
@@ -16,6 +17,9 @@ export default function StudyDeck({ deckKey, type, cards, getCardState, onMark, 
   const dueIndices = cards
     .map((_, i) => i)
     .filter((i) => getCardState(deckKey, cards[i].kana).nextReview <= Date.now());
+
+  // สลับระหว่างตารางกับบัตรคำก็จำตำแหน่งเหมือนกัน กดกลับจากบัตรจะได้อยู่ตรงแถวเดิมในตาราง
+  useScrollRestore(pos === null ? "table" : `card:${reviewQueue ? reviewQueue[pos] : pos}`);
 
   const exitFocus = () => {
     setPos(null);
