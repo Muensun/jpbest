@@ -6,16 +6,16 @@
 
 เว็บแอปเรียนภาษาญี่ปุ่นระดับ N5 สำหรับคนไทย แบบ gamification เล่นคนเดียว **ไม่มี backend** (state ทั้งหมดอยู่ใน localStorage) ชื่อแสดงผลคือ **JPTalk** (ชื่อโฟลเดอร์/repo ยังเป็น JPBest — ตั้งใจให้ต่างกัน ดู commit `38fb58b`)
 
-เนื้อหาที่สอน: ฮิรางานะ 104 ตัว / คาตากานะ 104 ตัว (清音 46, 濁音 25, 拗音 33 ต่อชุด), คำศัพท์ N5 54 คำ (6 หมวด), ประโยค N5 24 ประโยค (4 หมวด)
+เนื้อหาที่สอน (รวม 435 ใบ): ฮิรางานะ 104 ตัว / คาตากานะ 104 ตัว (清音 46, 濁音 25, 拗音 33 ต่อชุด), คันจิ N5 88 ตัว (9 หมวด), คำศัพท์ N5 91 คำ (10 หมวด), ประโยค N5 48 ประโยค (8 หมวด)
 
 **4 โหมดหลัก** (เลือกจากหน้า Home):
 
 | โหมด | ไฟล์ | ทำอะไร |
 |---|---|---|
 | EXPLORE 📖 | `StudyDeck` + `DeckTable` + `Flashcard` | ดูตารางอ้างอิง (kana / romaji / คำอ่านไทย) แตะแถวเพื่อเปิดบัตรคำพลิกได้ กด "จำได้/ยังไม่รู้" เพื่อป้อนระบบ spaced repetition มีแบนเนอร์ "ถึงกำหนดทบทวน" เปิดคิวเฉพาะการ์ดที่ครบกำหนด |
-| WRITE ✍️ | `WriteDeck` | เขียนตัวอักษรบน canvas มี 2 โหมด: ลอกเส้นจาง / ไม่มีเส้น (ท่องจำ + ปุ่มเฉลย) กดตรวจแล้วให้คะแนน % จากการซ้อนทับ pixel (coverage + precision เฉลี่ยกัน) **ไม่มีการเช็กลำดับเส้น** เพราะยังไม่มี stroke-order dataset |
-| BUILD 🧩 | `BuildDeck` | โชว์คำแปลไทย ผู้เล่นแตะ tile คานะที่สับแล้วต่อเป็นคำ/ประโยค (เฉพาะหมวดคำศัพท์+ประโยค) ตรวจอัตโนมัติเมื่อเติมครบทุกช่อง |
-| CHALLENGE 🎯 | `QuizDeck` | ควิซ 4 ตัวเลือก (kana → romaji สำหรับตัวอักษร, kana → ความหมายไทย สำหรับคำ/ประโยค) มี combo, XP, ดาว 3 ระดับ |
+| WRITE ✍️ | `WriteDeck` | เขียนตัวอักษร (คานะ + คันจิ) บน canvas มี 2 โหมด: ลอกเส้นจาง / ไม่มีเส้น (ท่องจำ + ปุ่มเฉลย) กดตรวจแล้วให้คะแนน % จากการซ้อนทับ pixel (coverage + precision เฉลี่ยกัน) **ไม่มีการเช็กลำดับเส้น** เพราะยังไม่มี stroke-order dataset |
+| BUILD 🧩 | `BuildDeck` | โชว์คำแปลไทย ผู้เล่นแตะ tile คานะที่สับแล้วต่อเป็นคำ/ประโยค (เฉพาะหมวดคำศัพท์+ประโยค ตัวอักษรเดี่ยวต่อไม่ได้) ตรวจอัตโนมัติเมื่อเติมครบทุกช่อง |
+| CHALLENGE 🎯 | `QuizDeck` | ควิซ 4 ตัวเลือก (คานะ → romaji, คันจิ/คำ/ประโยค → ความหมายไทย) มี combo, XP, ดาว 3 ระดับ |
 
 ระบบสะสมร่วม: XP/เลเวล (100 XP ต่อเลเวล), daily streak + longest streak, ดาวสูงสุดและคอมโบสูงสุดต่อเด็ค, Leitner box ต่อการ์ด
 UI สลับได้ 3 ภาษา: ไทย (ดีฟอลต์) / English / 日本語 — **แต่เนื้อหาบัตรคำเป็นภาษาไทยเสมอ** เพราะถือเป็นสื่อการเรียน ไม่ใช่ UI chrome (เจตนาตั้งแต่ commit `223f328`)
@@ -46,6 +46,7 @@ src/
   useProgress.js        Leitner box ต่อการ์ด + bestStars/bestCombo ต่อเด็ค
   useGamification.js    XP รวม + เลเวล
   useStreak.js          daily streak + longest
+  useScrollRestore.js   จำตำแหน่ง scroll ต่อหน้า กดกลับแล้วไม่เด้งขึ้นบนสุด
   components/
     Home.jsx            โลโก้ + streak badge + XpBar + เมนู 4 ใบ
     ExploreMenu / ChallengeMenu / WriteMenu / BuildMenu   หน้าเลือกเด็คของแต่ละโหมด
@@ -56,8 +57,10 @@ src/
     XpBar.jsx / LanguageSwitcher.jsx
   data/
     hiragana.js / katakana.js   groups: seion / dakuon / youon
+    kanji.js                    คันจิ N5 88 ตัว 9 หมวดตามความหมาย
     vocab.js / sentences.js     groups แยกตามหมวด/สถานการณ์
-    sections.js                 DECK_SECTIONS: characters | wordsSentences (แหล่งความจริงของเมนูทุกโหมด)
+    sections.js                 DECK_SECTIONS: characters (hiragana/katakana/kanji) | wordsSentences (vocab/sentences)
+                                — แหล่งความจริงของเมนูทุกโหมด
     kanaThai.js                 romaji → คำอ่านไทยโดยประมาณ + thaiReading()
 public/logo.png         โลโก้ + favicon
 public/icons.svg        ** leftover จาก template ไม่ได้ใช้ที่ไหน ลบได้ **
@@ -65,7 +68,9 @@ hiragana-app-prompt.md  prompt ต้นฉบับที่ใช้เริ�
 language switch.png     mockup ของ language switcher (ยังไม่ commit)
 ```
 
-รูปร่างข้อมูล: deck group = `{ id, label, cards[] }`; card ตัวอักษร = `{ kana, romaji }`; card คำ/ประโยค = `{ kana, kanji, romaji, meaning }` (`kanji` เป็น `""` ได้)
+รูปร่างข้อมูล: deck group = `{ id, label, cards[] }`; card คานะ = `{ kana, romaji }`; card คำ/ประโยค = `{ kana, kanji, romaji, meaning }` (`kanji` เป็น `""` ได้); card คันจิ = `{ kana: "漢", kanji: "", romaji: "on / kun", meaning }`
+
+⚠️ ฟิลด์ `kana` จริง ๆ แล้วหมายถึง **"หน้าบัตร"** ไม่ใช่ "ตัวคานะ" — เป็นทั้งตัวที่โชว์หน้าบัตรทุกชนิดเด็คและเป็น key ของ progress ([useProgress.js:31](src/useProgress.js#L31)) ตัวคันจิจึงอยู่ในฟิลด์นี้ ไม่ใช่ฟิลด์ `kanji` (ฟิลด์นั้นไว้ใส่รูปคันจิของคำ/ประโยคที่เขียนด้วยคานะ) ถ้าจะ rename เป็น `front` ต้องแก้ 7 ไฟล์ (6 คอมโพเนนต์ + `useProgress.js`) แต่ค่าใน localStorage ไม่เสียเพราะเก็บเป็นค่าของฟิลด์ ไม่ใช่ชื่อฟิลด์
 **deckKey** = `` `${type}:${group.id}` `` และ BUILD ใช้ `` `build:${type}:${group.id}` `` เพื่อแยกสถิติออกจาก CHALLENGE
 
 ## 4. Timeline การพัฒนา (จาก git log — main เดียว ไม่มี branch)
@@ -82,7 +87,11 @@ language switch.png     mockup ของ language switcher (ยังไม่ c
 | 4 ส.ค. | `223f328` | **i18n ไทย/อังกฤษ/ญี่ปุ่น** + language switcher (ทำตาม mockup `language switch.png`); ตัดสินใจว่าเนื้อหาบัตรคำคงเป็นไทย |
 | 4 ส.ค. | `b04056d` | เปลี่ยนธีมสีม่วง → **แดง/เทา-เขียว/น้ำเงินเข้ม** ผ่าน CSS variables |
 | 4 ส.ค. | `0d36279` | **ยกเครื่องระบบความจำ**: flag known/unknown → Leitner box 0-5 (ผิด=กลับ box 0, ถูก=ขยับ box, ทบทวน 1/3/7/14/30 วัน), daily streak, combo + โบนัส XP, personal best, และแก้คำอ่านไทยแถว さ/ざ/ち/を ให้ตรงสเปกต้นฉบับ |
-| 8 ส.ค. | `4e02899` | **โหมด BUILD (ต่อคำ)** — ใช้ระบบ combo/XP/ดาวร่วมกับ CHALLENGE (commit ล่าสุด) |
+| 8 ส.ค. | `4e02899` | **โหมด BUILD (ต่อคำ)** — ใช้ระบบ combo/XP/ดาวร่วมกับ CHALLENGE |
+| 21 ก.ย. | `585aca8` | เพิ่มไฟล์ CLAUDE.md นี้ |
+| 21 ก.ย. | `0bff954` | **แก้ scroll เด้ง**: เพิ่ม `useScrollRestore` เพราะแอปไม่มี router เบราว์เซอร์เลยไม่เคยจำตำแหน่งให้ กดกลับจากเด็คทีไรไปโผล่บนสุด |
+| 21 ก.ย. | `2043be5` | เพิ่มคำศัพท์ 4 หมวด (สี/สถานที่/การเดินทาง/อากาศ) + ประโยค 4 หมวด (ซื้อของ/ร้านอาหาร/ถามทาง/ความรู้สึก) |
+| 21 ก.ย. | `2261449` | **เด็คคันจิ N5** เป็นเด็คที่สามในหมวด "ตัวอักษร" ได้ WRITE ฟรีและถูกกันออกจาก BUILD เอง; เปลี่ยนการเช็กชนิดเด็คใน 3 จุดเป็นกฎ "มี meaning ใช้ meaning" (commit ล่าสุด) |
 
 ทิศทางที่เห็นจาก timeline: เริ่มจาก flashcard ธรรมดา → เพิ่มโหมดการเรียนหลายแบบ → ทำ gamification ให้ลึกขึ้น (จาก "ใส่แต้ม" เป็น "บังคับสมองทวนจริง" ตามเป้าใน `hiragana-app-prompt.md`)
 
@@ -92,8 +101,9 @@ language switch.png     mockup ของ language switcher (ยังไม่ c
 - 4 โหมดครบ (EXPLORE / WRITE / BUILD / CHALLENGE) ใช้งานได้จริง
 - Spaced repetition แบบ Leitner 6 ระดับ + คิวทบทวนตามกำหนด
 - XP / เลเวล / ดาว / combo + โบนัส / daily streak / personal best — persist ครบ
-- i18n 3 ภาษา **key ครบเท่ากันทั้ง 75 key ทั้ง th/en/ja** (เช็กแล้ว ไม่มีตกหล่น)
+- i18n 3 ภาษา **key ครบเท่ากันทั้ง 94 key ทั้ง th/en/ja** (เช็กแล้ว ไม่มีตกหล่น)
 - Dark mode ผ่าน CSS variables, layout mobile-first
+- จำตำแหน่ง scroll ตอนกดกลับ ทั้งระดับหน้าและระดับตาราง↔บัตรคำใน EXPLORE
 - Deploy บน Netlify ได้
 
 ### ยังค้าง / รู้ปัญหาแล้วแต่ยังไม่แก้
@@ -133,6 +143,8 @@ language switch.png     mockup ของ language switcher (ยังไม่ c
 - state ทั้งหมดอยู่ที่ `App.jsx` แล้วส่งลงเป็น props — **ไม่มี context ยกเว้น i18n**
 - คอมโพเนนต์ลูกไม่แตะ localStorage เอง ทุกอย่างผ่าน hook 3 ตัว
 - เมนูทุกโหมดสร้างจาก `DECK_SECTIONS` ผ่าน `CategoryDeckList` ด้วย render props (`renderMeta`, `renderActions`) — จะเพิ่มโหมดใหม่ให้ filter `DECK_SECTIONS` แบบที่ `WriteMenu`/`BuildMenu` ทำ
+- **เพิ่มเด็คชนิดใหม่ให้ใส่ใน section ที่ถูก แล้ว filter ของทุกโหมดจะจัดการเอง** ไม่ต้องไล่แก้เมนู (คันจิใช้วิธีนี้: อยู่ใน `characters` → WRITE ได้ฟรี, BUILD กันออกเอง)
+- การ์ดแต่ละชนิดแยกด้วย **คุณสมบัติของการ์ด ไม่ใช่ `type`** — `card.meaning || thaiReading(card.romaji)` ใน `DeckTable`/`Flashcard`/`QuizDeck` ถ้าจะเพิ่มชนิดเด็คใหม่ให้ทำแนวนี้ อย่าไล่เติม `type === "..."`
 - อ่าน/เขียน localStorage ห่อ `try/catch` เสมอ และมีค่า fallback
 
 **CSS**
