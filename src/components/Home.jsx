@@ -46,14 +46,14 @@ export default function Home({ xp, streak, onExplore, onChallenge, onWrite, onBu
             <span className="menu-card-label">{t("nav.build")}</span>
             <span className="menu-card-desc">{t("home.buildDesc")}</span>
           </span>
-          <span className="menu-card-icon">🧩</span>
+          <img className="menu-card-art" src="/menu-build.png" alt="" />
         </button>
         <button className="menu-card menu-card-challenge" onClick={onChallenge}>
           <span className="menu-card-text">
             <span className="menu-card-label">{t("nav.challenge")}</span>
             <span className="menu-card-desc">{t("home.challengeDesc")}</span>
           </span>
-          <span className="menu-card-icon">🎯</span>
+          <img className="menu-card-art" src="/menu-challenge.png" alt="" />
         </button>
       </div>
 
