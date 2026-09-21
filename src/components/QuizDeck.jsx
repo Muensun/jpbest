@@ -148,7 +148,7 @@ export default function QuizDeck({ deckKey, type, cards, onBack, onFinish }) {
 
       <div className="quiz-choices">
         {question.choices.map((choice, i) => {
-          const label = type === "vocab" || type === "sentences" ? choice.meaning : choice.romaji;
+          const label = choice.meaning || choice.romaji;
           let cls = "quiz-choice";
           if (selected) {
             if (choice === question.correct) cls += " is-correct";

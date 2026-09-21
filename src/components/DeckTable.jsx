@@ -18,7 +18,7 @@ export default function DeckTable({ cards, type, knownSet, onRowClick }) {
         <tbody>
           {cards.map((card, i) => {
             const known = knownSet.has(card.kana);
-            const thai = isTextHeavy ? card.meaning : thaiReading(card.romaji);
+            const thai = card.meaning || thaiReading(card.romaji);
             return (
               <tr
                 key={card.kana + i}

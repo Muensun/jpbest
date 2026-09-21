@@ -2,7 +2,7 @@ import { thaiReading } from "../data/kanaThai.js";
 
 export default function Flashcard({ card, type, flipped, onFlip }) {
   const isSentence = type === "sentences";
-  const isTextHeavy = type === "vocab" || isSentence;
+  const hasMeaning = Boolean(card.meaning);
 
   return (
     <div className="flashcard-wrap" onClick={onFlip}>
@@ -11,7 +11,7 @@ export default function Flashcard({ card, type, flipped, onFlip }) {
           <span className={isSentence ? "sentence-text" : "kana-text"}>{card.kana}</span>
         </div>
         <div className="flashcard-face flashcard-back">
-          {isTextHeavy ? (
+          {hasMeaning ? (
             <>
               {card.kanji && (
                 <span className={isSentence ? "sentence-kanji-text" : "kanji-text"}>{card.kanji}</span>
