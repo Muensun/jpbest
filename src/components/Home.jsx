@@ -28,24 +28,32 @@ export default function Home({ xp, streak, onExplore, onChallenge, onWrite, onBu
 
       <div className="home-menu">
         <button className="menu-card menu-card-explore" onClick={onExplore}>
-          <span className="menu-card-icon">📖</span>
-          <span className="menu-card-label">{t("nav.explore")}</span>
-          <span className="menu-card-desc">{t("home.exploreDesc")}</span>
+          <span className="menu-card-text">
+            <span className="menu-card-label">{t("nav.explore")}</span>
+            <span className="menu-card-desc">{t("home.exploreDesc")}</span>
+          </span>
+          <img className="menu-card-art" src="/menu-explore.png" alt="" />
         </button>
         <button className="menu-card menu-card-write" onClick={onWrite}>
-          <span className="menu-card-icon">✍️</span>
-          <span className="menu-card-label">{t("nav.write")}</span>
-          <span className="menu-card-desc">{t("home.writeDesc")}</span>
+          <span className="menu-card-text">
+            <span className="menu-card-label">{t("nav.write")}</span>
+            <span className="menu-card-desc">{t("home.writeDesc")}</span>
+          </span>
+          <img className="menu-card-art" src="/menu-write.png" alt="" />
         </button>
         <button className="menu-card menu-card-build" onClick={onBuild}>
+          <span className="menu-card-text">
+            <span className="menu-card-label">{t("nav.build")}</span>
+            <span className="menu-card-desc">{t("home.buildDesc")}</span>
+          </span>
           <span className="menu-card-icon">🧩</span>
-          <span className="menu-card-label">{t("nav.build")}</span>
-          <span className="menu-card-desc">{t("home.buildDesc")}</span>
         </button>
         <button className="menu-card menu-card-challenge" onClick={onChallenge}>
+          <span className="menu-card-text">
+            <span className="menu-card-label">{t("nav.challenge")}</span>
+            <span className="menu-card-desc">{t("home.challengeDesc")}</span>
+          </span>
           <span className="menu-card-icon">🎯</span>
-          <span className="menu-card-label">{t("nav.challenge")}</span>
-          <span className="menu-card-desc">{t("home.challengeDesc")}</span>
         </button>
       </div>
 
